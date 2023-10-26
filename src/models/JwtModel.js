@@ -10,6 +10,12 @@ const JwtSchema = mongoose.Schema({
       ref: 'User',
       required: true
     },
+    expiresAt: {
+      type: Date,
+      expires: 0,
+      default: Date.now,
+      required: true
+    }
   });
   
   const Jwt = mongoose.model("Jwt", JwtSchema);
