@@ -5,6 +5,12 @@ const saveUser = async (userData) => {
   return await user.save();
 };
 
+const getUserById = async (userId) => {
+  const user = await User.findById(userId);
+  return user
+}
+
 module.exports = {
-  saveUser
+  saveUser,
+  getUserById
 };

@@ -1,4 +1,4 @@
-const {tryCatchController} = require("../utils/tryCatchHandler.js")
+const { tryCatchController } = require("../utils/tryCatchHandler.js")
 const authService = require("../services/authService.js");
 
 const register = tryCatchController(async (req,res) => {
@@ -8,5 +8,5 @@ const register = tryCatchController(async (req,res) => {
 
 //export the the function
 module.exports = {
-    register
+    register,
 }
