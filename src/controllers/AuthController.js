@@ -8,6 +8,9 @@ const register = tryCatchController(async (req,res) => {
 
 const localLogin = tryCatchController(async (req,res) => {
     const user = await authService.localLogin(req.body)
+    res.cookie("token", user.token, {
+        httpOnly: true
+    })
     res.status(200).json(user)
 })
 
