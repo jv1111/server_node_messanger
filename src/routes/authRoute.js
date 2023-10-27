@@ -12,6 +12,11 @@ router.post(
 router.get(
     "/loginSession",
     verifyUserSession
+);
+
+router.post(
+    "/login",
+    AuthController.localLogin
 )
 
 module.exports = router;

@@ -6,7 +6,13 @@ const register = tryCatchController(async (req,res) => {
     res.status(201).json(user)
 })
 
+const localLogin = tryCatchController(async (req,res) => {
+    const user = await authService.localLogin(req.body)
+    res.status(200).json(user)
+})
+
 //export the the function
 module.exports = {
     register,
+    localLogin
 }
