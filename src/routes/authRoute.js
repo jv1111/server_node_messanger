@@ -1,16 +1,17 @@
 const express = require("express")
 const router = express.Router()
 const AuthController = require("../controllers/AuthController.js");
-const { verrifyUserSession } = require("../middlewares/authMiddleware.js");
+const { verifyUserSession, verifyLocalRegistration } = require("../middlewares/authMiddleware.js");
 
 router.post(
     "/register",
+    verifyLocalRegistration,
     AuthController.register
 );
 
 router.get(
     "/loginSession",
-    verrifyUserSession
+    verifyUserSession
 )
 
 module.exports = router;

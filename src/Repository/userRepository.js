@@ -10,7 +10,13 @@ const getUserById = async (userId) => {
   return user
 }
 
+const getUserByUsername = async (username) => {
+  const user = await User.findOne({username: username})
+  return user
+}
+
 module.exports = {
   saveUser,
-  getUserById
+  getUserById,
+  getUserByUsername
 };

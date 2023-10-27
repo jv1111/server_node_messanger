@@ -33,7 +33,13 @@ const verifyUserSession = async (token) => {
     }
 }
 
+const getUserByUsername = async(username) => {
+    const user = await userRepository.getUserByUsername(username)
+    return user
+}
+
 module.exports = {
     register,
-    verifyUserSession
+    verifyUserSession,
+    getUserByUsername
 }
