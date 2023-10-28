@@ -5,6 +5,12 @@ const getTokenFromDatabase = async (token) => {
     return storedToken
 }
 
+const removeToken = async (token) => {
+    const deletedToken = await jwtToken.findOneAndDelete({ token: token });
+    return deletedToken;    
+}
+
 module.exports = {
-    getTokenFromDatabase
+    getTokenFromDatabase,
+    removeToken
 };

@@ -1,7 +1,7 @@
 const userRepository = require("../Repository/userRepository");
 const bcryptHandler = require("../utils/bcryptHandler");
 const jwtHandler = require("../utils/jwtHandler");
-const { getTokenFromDatabase } = require("../Repository/jwtRepository");
+const { getTokenFromDatabase, removeToken } = require("../Repository/jwtRepository");
 const { throwError } = require("../utils/errorHandler");
 
 const register = async (userData) => {
@@ -51,9 +51,16 @@ const localLogin = async(userInput) => {
     }
 }
 
+const logout = async(token) => {
+    const deletedToken = await removeToken(token)
+    if(!deletedToken) throwError("Token not found", 404)
+    return { success: true, deletedToken: deletedToken }
+}
+
 module.exports = {
     register,
     verifyUserSession,
     getUserByUsername,
-    localLogin
+    localLogin,
+    logout
 }

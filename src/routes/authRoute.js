@@ -19,4 +19,9 @@ router.post(
     AuthController.localLogin
 )
 
+router.delete(
+    "/logout",
+    AuthController.logout
+)
+
 module.exports = router;
