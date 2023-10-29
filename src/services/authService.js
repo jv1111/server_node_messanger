@@ -3,6 +3,7 @@ const bcryptHandler = require("../utils/bcryptHandler");
 const jwtHandler = require("../utils/jwtHandler");
 const { getTokenFromDatabase, removeToken } = require("../Repository/jwtRepository");
 const { throwError } = require("../utils/errorHandler");
+const googleAuth = require("../utils/googleAuth");
 
 const register = async (userData) => {
     const hashedPassword = await bcryptHandler.hash(userData.password)
@@ -51,6 +52,29 @@ const localLogin = async(userInput) => {
     }
 }
 
+const loginWithGoogle = async(googleToken) => {
+    const payload = await googleAuth.verify(googleToken)
+    var user = await userRepository.getUserByEmail(payload.email);
+    if(!user){
+        user = await userRepository.saveUser({
+            email: payload.email,
+            profileImg: {url: payload.picture, filePath: null},
+            authType: "google"
+        })
+        console.log("new user has saved");
+    }
+    const {_id, profileImg, username, email, authType} = user
+    const jwtToken = await jwtHandler.generateAndSaveToken(user._id)
+    return {
+        _id: _id,
+        profileImg: profileImg,
+        username: username,
+        email: email,
+        authType: authType,
+        jwtToken: jwtToken
+    }
+}
+
 const logout = async(token) => {
     const deletedToken = await removeToken(token)
     if(!deletedToken) throwError("Token not found", 404)
@@ -62,5 +86,6 @@ module.exports = {
     verifyUserSession,
     getUserByUsername,
     localLogin,
+    loginWithGoogle,
     logout
 }

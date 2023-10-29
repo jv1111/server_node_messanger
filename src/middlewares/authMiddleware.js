@@ -15,6 +15,7 @@ const verifyUserSession = tryCatchController(async (req,res,next) => {
 
 const verifyLocalRegistration = tryCatchController(async (req,res,next) => {
     const username = req.body.username
+    if(!username) throwError("Must have a username", 409)
     const user = await authService.getUserByUsername(username);
     if(user) throwError("This user is already registered", 409)
     next()

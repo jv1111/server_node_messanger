@@ -1,6 +1,5 @@
 const { tryCatchController } = require("../utils/tryCatchHandler.js")
 const authService = require("../services/authService.js");
-const { expireInHours } = require("../utils/expiryGenerator.js");
 const { setToken } = require("../helper/cookieHelper.js");
 
 const register = tryCatchController(async (req,res) => {
@@ -16,6 +15,13 @@ const localLogin = tryCatchController(async (req,res) => {
     res.status(200).json(user)
 })
 
+const googleLogin = tryCatchController(async (req,res)=>{
+    console.log(req.body);
+    const googleToken = req.body.token
+    const user = await authService.loginWithGoogle(googleToken);
+    res.status(200).json(user)
+})
+
 const logout = tryCatchController(async (req,res)=>{
     const token = req.cookies.token
     const response = await authService.logout(token)
@@ -26,5 +32,6 @@ const logout = tryCatchController(async (req,res)=>{
 module.exports = {
     register,
     localLogin,
+    googleLogin,
     logout
 }

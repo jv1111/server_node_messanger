@@ -24,4 +24,9 @@ router.delete(
     AuthController.logout
 )
 
+router.post(
+    "/googleLogin",
+    AuthController.googleLogin
+)
+
 module.exports = router;
