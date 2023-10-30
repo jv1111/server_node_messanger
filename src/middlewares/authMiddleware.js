@@ -1,10 +1,10 @@
 const authService = require("../services/authService");
 const { throwError } = require("../utils/errorHandler");
 const { tryCatchController } = require("../utils/tryCatchHandler")
+const { getTokenFromRequest } = require("../helper/authHelper")
 
 const verifyUserSession = tryCatchController(async (req,res,next) => {
-    var token;
-    if(req.cookies) token = req.cookies.token
+    var token = getTokenFromRequest(req);
     const user = await authService.verifyUserSession(token);
     res.cookie("token", user.token, {
         httpOnly: true,
