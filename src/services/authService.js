@@ -4,6 +4,7 @@ const jwtHandler = require("../utils/jwtHandler");
 const { getTokenFromDatabase, removeToken } = require("../Repository/jwtRepository");
 const { throwError } = require("../utils/errorHandler");
 const googleAuth = require("../utils/googleAuth");
+const { generateUniqueUsername } = require("../utils/UsernameGenerator");
 
 const register = async (userData) => {
     const hashedPassword = await bcryptHandler.hash(userData.password)
@@ -56,7 +57,9 @@ const loginWithGoogle = async(googleToken) => {
     const payload = await googleAuth.verify(googleToken)
     var user = await userRepository.getUserByEmail(payload.email);
     if(!user){
+        const newUsername = await generateUniqueUsername(payload.name)
         user = await userRepository.saveUser({
+            username: newUsername,
             email: payload.email,
             profileImg: {url: payload.picture, filePath: null},
             authType: "google"
@@ -66,7 +69,7 @@ const loginWithGoogle = async(googleToken) => {
     const {_id, profileImg, username, email, authType} = user
     const jwtToken = await jwtHandler.generateAndSaveToken(user._id)
     return {
-        _id: _id,
+        id: _id,
         profileImg: profileImg,
         username: username,
         email: email,
