@@ -5,12 +5,14 @@ const { getTokenFromDatabase, removeToken } = require("../Repository/jwtReposito
 const { throwError } = require("../utils/errorHandler");
 const googleAuth = require("../utils/googleAuth");
 const { generateUniqueUsername } = require("../utils/UsernameGenerator");
+const { removePassword } = require("../utils/responseUtils");
 
 const register = async (userData) => {
     const hashedPassword = await bcryptHandler.hash(userData.password)
     const user = await userRepository.saveUser({...userData, password: hashedPassword})//save all data from the user and changed that hashedPassword
     const token = await jwtHandler.generateAndSaveToken(user._id)
-    return {user: user, token: token}
+    const userWithoutPass = removePassword(user)
+    return {user: userWithoutPass, token: token}
 }
 
 const verifyUserSession = async (token) => {
@@ -19,14 +21,10 @@ const verifyUserSession = async (token) => {
     const decodedToken = jwtHandler.verifyToken(token);
     const user = await userRepository.getUserById(decodedToken.id);
     if(!user) throwError("User not found", 401)
-    const {_id, profileImg, username, email, authType} = user
-    const newToken = await jwtHandler.refreshToken(storedToken, _id)
+    const newToken = await jwtHandler.refreshToken(storedToken, user._id);
+    const userWithoutPass = removePassword(user)
     return {
-        _id: _id,
-        profileImg: profileImg,
-        username: username,
-        email: email,
-        authType: authType,
+        user: userWithoutPass,
         token: newToken
     }
 }
@@ -41,14 +39,10 @@ const localLogin = async(userInput) => {
     if(!user) throwError("User not found", 404)
     const isPasswordValid = await bcryptHandler.compare(userInput.password, user.password)
     if(!isPasswordValid) throwError("Ivalid password", 401)
-    const {_id, profileImg, username, email, authType} = user
     const token = await jwtHandler.generateAndSaveToken(user._id)
+    const userWithoutPass = removePassword(user)
     return {
-        _id: _id,
-        profileImg: profileImg,
-        username: username,
-        email: email,
-        authType: authType,
+        user: userWithoutPass,
         token: token
     }
 }

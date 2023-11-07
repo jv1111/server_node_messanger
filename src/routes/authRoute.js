@@ -10,7 +10,7 @@ router.post(
 );
 
 router.get(
-    "/loginSession",
+    "/login",
     verifyUserSession
 );
 
