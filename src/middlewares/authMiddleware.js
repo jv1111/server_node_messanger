@@ -6,6 +6,8 @@ const { setToken } = require("../helper/cookieHelper");
 
 const verifyUserSession = tryCatchController(async (req,res,next) => {
     var token = getTokenFromRequest(req);
+    console.log("getting the session")
+    console.log(`token: ${token}`);
     const user = await authService.verifyUserSession(token);
     setToken(res, user.token)
     console.log(user)

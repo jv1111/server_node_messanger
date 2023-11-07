@@ -58,7 +58,7 @@ const loginWithGoogle = async(googleToken) => {
             profileImg: {url: payload.picture, filePath: null},
             authType: "google"
         })
-        console.log("new user has saved");
+        console.log("new user has been saved");
     }
     const {_id, profileImg, username, email, authType} = user
     const jwtToken = await jwtHandler.generateAndSaveToken(user._id)
@@ -68,7 +68,7 @@ const loginWithGoogle = async(googleToken) => {
         username: username,
         email: email,
         authType: authType,
-        jwtToken: jwtToken
+        token: jwtToken
     }
 }
 

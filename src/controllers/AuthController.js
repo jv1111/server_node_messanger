@@ -19,6 +19,7 @@ const googleLogin = tryCatchController(async (req,res)=>{
     console.log(req.body);
     const googleToken = req.body.token
     const user = await authService.loginWithGoogle(googleToken);
+    console.log(user)
     res.status(200).json(user)
 })
 
