@@ -41,10 +41,8 @@ const localLogin = async(userInput) => {
     if(!isPasswordValid) throwError("Ivalid password", 401)
     const token = await jwtHandler.generateAndSaveToken(user._id)
     const userWithoutPass = removePassword(user)
-    return {
-        user: userWithoutPass,
-        token: token
-    }
+    userWithoutPass.token = token
+    return userWithoutPass
 }
 
 const loginWithGoogle = async(googleToken) => {

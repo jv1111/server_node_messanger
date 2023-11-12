@@ -20,9 +20,23 @@ const getUserByEmail = async (email) => {
   return user
 }
 
+const searchUser = async (inputText) => {
+    const regex = new RegExp(inputText, 'i'); // Case-insensitive regex pattern
+    const users = await User.find({ username: regex });
+    return users;
+}
+
+const getUsers = async () => {
+  const limit = 20;
+  const users = await User.find().limit(limit);
+  return users;
+};
+
 module.exports = {
   saveUser,
   getUserById,
   getUserByUsername,
-  getUserByEmail
+  getUserByEmail,
+  searchUser,
+  getUsers
 };

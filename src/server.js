@@ -17,6 +17,7 @@ app.use(cookieParser());// to send cookie
 database.connectDb()
 
 app.use("/auth", require("./routes/authRoute.js"));
+app.use("/chat", require("./routes/chatRoute.js"));
 app.use(errorHandler)
 
 app.listen(PORT, ()=>{
