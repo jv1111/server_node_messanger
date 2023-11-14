@@ -13,7 +13,14 @@ const getUsers = tryCatchController(async (req,res) => {
     res.status(200).json(users)
 })
 
+const sendMessage = tryCatchController(async (req,res)=>{
+    const chatData = req.body
+    const response = await chatService.sendMessage(chatData);
+    res.status(200).json(response);
+})
+
 module.exports = {
     searchPeople,
-    getUsers
+    getUsers,
+    sendMessage
 }

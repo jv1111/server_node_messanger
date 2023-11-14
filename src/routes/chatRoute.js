@@ -12,4 +12,9 @@ router.get(
     ChatController.getUsers
 );
 
+router.put(
+    "/sendMessage",
+    ChatController.sendMessage
+)
+
 module.exports = router

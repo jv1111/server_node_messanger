@@ -11,7 +11,13 @@ const getUsers = async () => {
     return users
 }
 
+const sendMessage = async (chatData)  => {
+    const response = await chatRepository.saveMessage(chatData)
+    return {success: true}
+}
+
 module.exports = {
     searchPeople,
-    getUsers
+    getUsers,
+    sendMessage
 }
